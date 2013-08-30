@@ -68,51 +68,51 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 			imageHeight = imageHeight > 0 ? imageHeight : 100;
 			waterMarkWidth = waterMarkWidth > 0 ? waterMarkWidth : 100;
 			waterMarkHeight = waterMarkHeight > 0 ? waterMarkHeight : 100;
-			int num1 = 0;
-			int num2 = 0;
-			int num3 = imageWidth / 100 * (int)this._settings.Scale;
-			int num4 = waterMarkHeight * num3 / waterMarkWidth;
+			int left = 0;
+			int top = 0;
+			int width = imageWidth / 100 * (int)this._settings.Scale;
+			int height = waterMarkHeight * width / waterMarkWidth;
 
 			switch (position)
 			{
 				case WaterMarkPositions.TopLeft:
-					num1 = 10;
-					num2 = 10;
+					left = 10;
+					top = 10;
 					break;
 				case WaterMarkPositions.TopRight:
-					num1 = imageWidth - num3 - 10;
-					num2 = 10;
+					left = imageWidth - width - 10;
+					top = 10;
 					break;
 				case WaterMarkPositions.TopMiddle:
-					num1 = (imageWidth - num3 - 10) / 2;
-					num2 = 10;
+					left = (imageWidth - width - 10) / 2;
+					top = 10;
 					break;
 				case WaterMarkPositions.BottomLeft:
-					num1 = 10;
-					num2 = imageHeight - num4 - 10;
+					left = 10;
+					top = imageHeight - height - 10;
 					break;
 				case WaterMarkPositions.BottomRight:
-					num1 = imageWidth - num3 - 10;
-					num2 = imageHeight - num4 - 10;
+					left = imageWidth - width - 10;
+					top = imageHeight - height - 10;
 					break;
 				case WaterMarkPositions.BottomMiddle:
-					num1 = (imageWidth - num3 - 10) / 2;
-					num2 = imageHeight - num4 - 10;
+					left = (imageWidth - width - 10) / 2;
+					top = imageHeight - height - 10;
 					break;
 				case WaterMarkPositions.MiddleLeft:
-					num1 = 10;
-					num2 = (imageHeight - num4 - 10) / 2;
+					left = 10;
+					top = (imageHeight - height - 10) / 2;
 					break;
 				case WaterMarkPositions.MiddleRight:
-					num1 = imageWidth - num3 - 10;
-					num2 = (imageHeight - num4 - 10) / 2;
+					left = imageWidth - width - 10;
+					top = (imageHeight - height - 10) / 2;
 					break;
 				case WaterMarkPositions.Center:
-					num1 = (imageWidth - num3 - 10) / 2;
-					num2 = (imageHeight - num4 - 10) / 2;
+					left = (imageWidth - width - 10) / 2;
+					top = (imageHeight - height - 10) / 2;
 					break;
 			}
-			return new Rectangle(num1 > 0 ? num1 : 10, num2 > 0 ? num2 : 10, num3 > 0 ? num3 : 100, num4 > 0 ? num4 : 100);
+			return new Rectangle(left > 0 ? left : 10, top > 0 ? top : 10, width > 0 ? width : 100, height > 0 ? height : 100);
 		}
 
 		public virtual void PlaceWaterMark(ref Graphics g, int width, int height, WaterMarkPositions position)
