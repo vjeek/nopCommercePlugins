@@ -6,6 +6,7 @@ using System.IO;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
+using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Media;
 using Nop.Core.Plugins;
 using Nop.Services.Configuration;
@@ -314,5 +315,23 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 			return url;
 		}
 
+		public void ClearThumbs()
+		{
+			string searchPattern = "*.*";
+			string path = this._webHelper.MapPath("~/Content/Images/Thumbs/");
+			if (!Directory.Exists(path))
+				return;
+			foreach (string str in Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories))
+			{
+				try
+				{
+					File.Delete(this.GetThumbLocalPath(str));
+				}
+				catch (Exception ex)
+				{
+					_logger.Error(ex.Message, ex);
+				}
+			}
+		}
 	}
 }

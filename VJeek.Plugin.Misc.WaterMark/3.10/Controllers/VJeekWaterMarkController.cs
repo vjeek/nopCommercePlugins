@@ -5,13 +5,16 @@ using System.Web.Mvc;
 using Nop.Admin.Controllers;
 using Nop.Core;
 using Nop.Core.Domain.Security;
+using Nop.Core.Infrastructure;
 using Nop.Core.Plugins;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
+using Nop.Services.Media;
 using Nop.Services.Security;
 using Nop.Services.Stores;
 using Nop.Web.Framework.Controllers;
+using VJeek.Plugin.Misc.WaterMark.Core;
 using VJeek.Plugin.Misc.WaterMark.Models;
 
 namespace VJeek.Plugin.Misc.WaterMark.Controllers
@@ -165,7 +168,7 @@ namespace VJeek.Plugin.Misc.WaterMark.Controllers
 				_settingService.DeleteSetting(settings, x => x.Positions, scopeConfiguration);
 
 			this._settingService.ClearCache();
-
+			((VJeekPictureService)EngineContext.Current.Resolve<IPictureService>()).ClearThumbs();
 			return Configure();
 		}
 	}
