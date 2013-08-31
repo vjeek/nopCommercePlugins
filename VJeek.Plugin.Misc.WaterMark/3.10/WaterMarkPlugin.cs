@@ -1,10 +1,13 @@
 ﻿using System.Web;
 using System.Web.Routing;
+using Nop.Core.Infrastructure;
 using Nop.Core.Plugins;
 using Nop.Services.Common;
 using Nop.Services.Configuration;
 using Nop.Services.Localization;
 using Nop.Services.Logging;
+using Nop.Services.Media;
+using VJeek.Plugin.Misc.WaterMark.Core;
 using VJeek.Plugin.Misc.WaterMark.Models;
 
 namespace VJeek.Plugin.Misc.WaterMark
@@ -69,7 +72,7 @@ namespace VJeek.Plugin.Misc.WaterMark
 			this.DeletePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.Scale");
 			this.DeletePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.Transparency");
 			this.DeletePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.OnlyLargerThen");
-
+			((VJeekPictureService)EngineContext.Current.Resolve<IPictureService>()).ClearThumbs();
 			base.Uninstall();
 		}
 	}
