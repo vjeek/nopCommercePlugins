@@ -54,6 +54,9 @@ namespace VJeek.Plugin.Misc.WaterMark
 			this.AddOrUpdatePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.Scale", "Image scaling (percents)");
 			this.AddOrUpdatePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.Transparency", "Transparency of watermark image");
 			this.AddOrUpdatePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.OnlyLargerThen", "Use only for photos larger then Xpx in one dimension");
+			this.AddOrUpdatePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.ApplyOnProductPictures", "Should apply watermark on products pictures");
+			this.AddOrUpdatePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.ApplyOnCategoryPictures", "Should apply watermark on category pictures");
+			this.AddOrUpdatePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.ApplyOnProductVariantAttributeValuePictures", "Should apply watermark on productvariant pictures");
 
 			base.Install();
 		}
@@ -72,6 +75,9 @@ namespace VJeek.Plugin.Misc.WaterMark
 			this.DeletePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.Scale");
 			this.DeletePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.Transparency");
 			this.DeletePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.OnlyLargerThen");
+			this.DeletePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.ApplyOnProductPictures");
+			this.DeletePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.ApplyOnCategoryPictures");
+			this.DeletePluginLocaleResource("VJeek.Plugin.Misc.WaterMark.ApplyOnProductVariantAttributeValuePictures");
 			((VJeekPictureService)EngineContext.Current.Resolve<IPictureService>()).ClearThumbs();
 			base.Uninstall();
 		}

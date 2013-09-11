@@ -38,6 +38,19 @@ namespace VJeek.Plugin.Misc.WaterMark.Models
 		public int OnlyLargerThen { get; set; }
 		public bool OnlyLargerThen_Override { get; set; }
 
+
+		[NopResourceDisplayName("VJeek.Plugin.Misc.WaterMark.ApplyOnProductPictures")]
+		public bool ApplyOnProductPictures { get; set; }
+		public bool ApplyOnProductPictures_Override { get; set; }
+
+		[NopResourceDisplayName("VJeek.Plugin.Misc.WaterMark.ApplyOnCategoryPictures")]
+		public bool ApplyOnCategoryPictures { get; set; }
+		public bool ApplyOnCategoryPictures_Override { get; set; }
+
+		[NopResourceDisplayName("VJeek.Plugin.Misc.WaterMark.ApplyOnProductVariantAttributeValuePictures")]
+		public bool ApplyOnProductVariantAttributeValuePictures { get; set; }
+		public bool ApplyOnProductVariantPictures_Override { get; set; }
+
 		public WaterMarkSettingsModel()
 			: base()
 		{

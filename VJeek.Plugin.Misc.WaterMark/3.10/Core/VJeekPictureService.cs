@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using Nop.Core;
 using Nop.Core.Data;
 using Nop.Core.Domain.Catalog;
@@ -30,6 +31,8 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 		private readonly IStoreContext _storeContext;
 		private readonly WaterMarkSettings _settings;
 		private readonly Image _waterMarkImage;
+		private readonly IRepository<ProductVariantAttributeValue> _productVariantAttiributeValueRepository;
+		private readonly IRepository<Category> _categoryRepository;
 		static VJeekPictureService()
 		{
 
@@ -39,7 +42,7 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 			IRepository<ProductPicture> productPictureRepository,
 			ISettingService settingService, IWebHelper webHelper,
 			ILogger logger, IEventPublisher eventPublisher,
-			MediaSettings mediaSettings, IStoreContext storeContext)
+			MediaSettings mediaSettings, IStoreContext storeContext, IRepository<ProductVariantAttributeValue> productVariantAttiributeValueRepository, IRepository<Category> categoryRepository)
 			: base(pictureRepository, productPictureRepository, settingService, webHelper, logger, eventPublisher, mediaSettings)
 		{
 			_eventPublisher = eventPublisher;
@@ -50,6 +53,8 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 			_settingService = settingService;
 			_storeContext = storeContext;
 			_webHelper = webHelper;
+			_categoryRepository = categoryRepository;
+			_productVariantAttiributeValueRepository = productVariantAttiributeValueRepository;
 
 			this._settings = (WaterMarkSettings)this._settingService.LoadSetting<WaterMarkSettings>(_storeContext.CurrentStore.Id);
 
@@ -166,10 +171,46 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 
 		}
 
+		private bool ShouldApply(int pictureId)
+		{
+			bool shouldGenerateWaterMark = this._settings.Enable;
+
+
+			if (_categoryRepository.Table.Any(x => x.PictureId == pictureId))
+			{
+				if (this._settings.ApplyOnCategoryPictures)
+					shouldGenerateWaterMark = true;
+				else return false;
+			}
+			else if (_productPictureRepository.Table.Any(x => x.PictureId == pictureId))
+			{
+				if (this._settings.ApplyOnProductPictures)
+					shouldGenerateWaterMark = true;
+				else return false;
+			}
+			else if (_productVariantAttiributeValueRepository.Table.Any(x => x.PictureId == pictureId))
+			{
+				if (this._settings.ApplyOnProductVariantAttributeValuePictures)
+					shouldGenerateWaterMark = true;
+				else return false;
+			}
+			else
+			{
+				shouldGenerateWaterMark = false;
+			}
+
+			return shouldGenerateWaterMark;
+		}
+
 		public override string GetPictureUrl(Picture picture, int targetSize = 0, bool showDefaultPicture = true, string storeLocation = null, PictureType defaultPictureType = PictureType.Entity)
 		{
-			if (!this._settings.Enable)
-				return base.GetPictureUrl(picture, targetSize, showDefaultPicture, storeLocation, defaultPictureType);
+			if (picture != null)
+			{
+				bool shouldGenerateWaterMark = ShouldApply(picture.Id);
+
+				if (!shouldGenerateWaterMark)
+					return base.GetPictureUrl(picture, targetSize, showDefaultPicture, storeLocation, defaultPictureType);
+			}
 
 			string url = string.Empty;
 			byte[] pictureBinary = null;

@@ -16,5 +16,11 @@ namespace VJeek.Plugin.Misc.WaterMark
 		public int Transparency { get; set; }
 
 		public int OnlyLargerThen { get; set; }
+
+		public bool ApplyOnProductPictures { get; set; }
+
+		public bool ApplyOnCategoryPictures { get; set; }
+
+		public bool ApplyOnProductVariantAttributeValuePictures { get; set; }
 	}
 }

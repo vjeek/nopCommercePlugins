@@ -121,6 +121,9 @@ namespace VJeek.Plugin.Misc.WaterMark.Controllers
 			settings.Scale = model.Scale;
 			settings.Transparency = model.Transparency;
 			settings.PictureId = model.PictureId;
+			settings.ApplyOnCategoryPictures = model.ApplyOnCategoryPictures;
+			settings.ApplyOnProductPictures = model.ApplyOnProductPictures;
+			settings.ApplyOnProductVariantAttributeValuePictures = model.ApplyOnProductVariantAttributeValuePictures;
 
 			foreach (WaterMarkPositions position in Enum.GetValues(typeof(WaterMarkPositions)))
 			{
@@ -166,6 +169,21 @@ namespace VJeek.Plugin.Misc.WaterMark.Controllers
 				_settingService.SaveSetting(settings, x => x.Positions, scopeConfiguration, false);
 			else if (scopeConfiguration > 0)
 				_settingService.DeleteSetting(settings, x => x.Positions, scopeConfiguration);
+
+			if (model.ApplyOnCategoryPictures_Override || scopeConfiguration == 0)
+				_settingService.SaveSetting(settings, x => x.ApplyOnCategoryPictures, scopeConfiguration, false);
+			else if (scopeConfiguration > 0)
+				_settingService.DeleteSetting(settings, x => x.ApplyOnCategoryPictures, scopeConfiguration);
+
+			if (model.ApplyOnProductPictures_Override || scopeConfiguration == 0)
+				_settingService.SaveSetting(settings, x => x.ApplyOnProductPictures, scopeConfiguration, false);
+			else if (scopeConfiguration > 0)
+				_settingService.DeleteSetting(settings, x => x.ApplyOnProductPictures, scopeConfiguration);
+
+			if (model.ApplyOnProductVariantPictures_Override || scopeConfiguration == 0)
+				_settingService.SaveSetting(settings, x => x.ApplyOnProductVariantAttributeValuePictures, scopeConfiguration, false);
+			else if (scopeConfiguration > 0)
+				_settingService.DeleteSetting(settings, x => x.ApplyOnProductVariantAttributeValuePictures, scopeConfiguration);
 
 			this._settingService.ClearCache();
 			((VJeekPictureService)EngineContext.Current.Resolve<IPictureService>()).ClearThumbs();
