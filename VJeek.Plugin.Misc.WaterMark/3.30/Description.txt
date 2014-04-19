@@ -1,8 +1,8 @@
 ﻿Group: Misc
 FriendlyName: VJeek watermark plugin
 SystemName: VJeek.Plugin.Misc.WaterMark
-Version: 1.0
-SupportedVersions: 3.10
+Version: 1.1
+SupportedVersions: 3.30
 Author: VJeek, sn@vjeek.com
 DisplayOrder: 1
 FileName: VJeek.Plugin.Misc.WaterMark.dll
