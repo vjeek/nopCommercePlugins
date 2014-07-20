@@ -90,11 +90,12 @@ namespace VJeek.Plugin.Misc.WaterMark.Controllers
 																						   scopeConfiguration);
 			}
 
-			return View("VJeek.Plugin.Misc.WaterMark.Views.Settings.Configure", settingsModel);
+			return View("~/Plugins/VJeek.Plugin.Misc.WaterMark/Views/Settings/Configure.cshtml", settingsModel);
 		}
 
 		[HttpPost]
 		[AdminAuthorize]
+		[ChildActionOnly]
 		public ActionResult Configure(WaterMarkSettingsModel model)
 		{
 			if (!((Controller)this).ModelState.IsValid)
