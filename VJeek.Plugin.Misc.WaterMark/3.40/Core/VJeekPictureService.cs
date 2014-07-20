@@ -56,7 +56,8 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 			_categoryRepository = categoryRepository;
 			_productVariantAttiributeValueRepository = productVariantAttiributeValueRepository;
 
-			this._settings = (WaterMarkSettings)this._settingService.LoadSetting<WaterMarkSettings>(_storeContext.CurrentStore.Id);
+			this._settings =
+				(WaterMarkSettings) this._settingService.LoadSetting<WaterMarkSettings>(_storeContext.CurrentStore.Id);
 
 			var waterMarkPicture = this.GetPictureById(this._settings.PictureId);
 			if (waterMarkPicture == null || waterMarkPicture.PictureBinary == null)
@@ -242,6 +243,12 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 			lock (syncRoot)
 			{
 				string seoFileName = picture.SeoFilename; // = GetPictureSeName(picture.SeoFilename); //just for sure
+
+
+
+
+
+
 				if (targetSize == 0)
 				{
 					thumbFileName = !String.IsNullOrEmpty(seoFileName) ?
@@ -273,6 +280,8 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 											g.Dispose();
 
 									}
+
+
 
 									EncoderParameters encoderParameters = new EncoderParameters();
 									encoderParameters.Param[0] = new EncoderParameter(Encoder.Quality, this._mediaSettings.DefaultImageQuality);
@@ -372,6 +381,44 @@ namespace VJeek.Plugin.Misc.WaterMark.Core
 				{
 					_logger.Error(ex.Message, ex);
 				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the first ImageCodecInfo instance with the specified mime type.
+		/// </summary>
+		/// <param name="mimeType">Mime type</param>
+		/// <returns>ImageCodecInfo</returns>
+		protected virtual ImageCodecInfo GetImageCodecInfoFromMimeType(string mimeType)
+		{
+			var info = ImageCodecInfo.GetImageEncoders();
+			foreach (var ici in info)
+				if (ici.MimeType.Equals(mimeType, StringComparison.OrdinalIgnoreCase))
+					return ici;
+			return null;
+		}
+
+		/// <summary>
+		/// Returns the first ImageCodecInfo instance with the specified extension.
+		/// </summary>
+		/// <param name="fileExt">File extension</param>
+		/// <returns>ImageCodecInfo</returns>
+		protected virtual ImageCodecInfo GetImageCodecInfoFromExtension(string fileExt)
+		{
+			fileExt = fileExt.TrimStart(".".ToCharArray()).ToLower().Trim();
+			switch (fileExt)
+			{
+				case "jpg":
+				case "jpeg":
+					return GetImageCodecInfoFromMimeType("image/jpeg");
+				case "png":
+					return GetImageCodecInfoFromMimeType("image/png");
+				case "gif":
+					//use png codec for gif to preserve transparency
+					//return GetImageCodecInfoFromMimeType("image/gif");
+					return GetImageCodecInfoFromMimeType("image/png");
+				default:
+					return GetImageCodecInfoFromMimeType("image/jpeg");
 			}
 		}
 	}

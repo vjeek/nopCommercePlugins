@@ -19,7 +19,7 @@ using VJeek.Plugin.Misc.WaterMark.Models;
 
 namespace VJeek.Plugin.Misc.WaterMark.Controllers
 {
-	public partial class VJeekWaterMarkController : Controller
+	public partial class VJeekWaterMarkController : BaseController
 	{
 
 		private readonly ISettingService _settingService;
@@ -53,7 +53,7 @@ namespace VJeek.Plugin.Misc.WaterMark.Controllers
 		[AdminAuthorize]
 		public ActionResult Configure()
 		{
-			int scopeConfiguration = ContollerExtensions.GetActiveStoreScopeConfiguration((Controller)this, this._storeService, this._workContext);
+			int scopeConfiguration = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
 
 			var settings = (WaterMarkSettings)this._settingService.LoadSetting<WaterMarkSettings>(scopeConfiguration);
 			var settingsModel = new WaterMarkSettingsModel
@@ -100,7 +100,7 @@ namespace VJeek.Plugin.Misc.WaterMark.Controllers
 			if (!((Controller)this).ModelState.IsValid)
 				return this.Configure();
 
-			int scopeConfiguration = ContollerExtensions.GetActiveStoreScopeConfiguration((Controller)this, this._storeService, this._workContext);
+			int scopeConfiguration = this.GetActiveStoreScopeConfiguration(_storeService, _workContext);
 
 			WaterMarkSettings settings = (WaterMarkSettings)this._settingService.LoadSetting<WaterMarkSettings>(scopeConfiguration);
 
